@@ -46,10 +46,11 @@ public class TodoController {
             // service.create를 통해 repository에 entity 저장
             // 이떄, 넘어오는 값이 null일 경우를 상정하여 Optional 사용
             Optional<TodoEntity> entities = service.create(entity);
+            List<TodoEntity> entitieList = service.retrieve("temporary-user");
             log.info("Log: service.create ok!!!");
 
             // entities를 dtos로 스트림 변환
-            List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+            List<TodoDTO> dtos = entitieList.stream().map(TodoDTO::new).collect(Collectors.toList());
             log.info("Log: entities => dtos ok!!!");
 
             // ResponseDTO 생성
@@ -127,9 +128,10 @@ public class TodoController {
             // service.updateTodo를 통해 repository에 entity 갱신
             // 이떄, 넘어오는 값이 null일 경우를 상정하여 Optional 사용
             Optional<TodoEntity> entities = service.updateTodo(entity);
+            List<TodoEntity> entitieList = service.retrieve("temporary-user");
 
             // entities를 dtos로 스트림 변환
-            List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+            List<TodoDTO> dtos = entitieList.stream().map(TodoDTO::new).collect(Collectors.toList());
 
             // ResponseDTO 생성
             ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
@@ -153,9 +155,17 @@ public class TodoController {
             // service.delete를 통해 repository에 entity 삭제
             String msg = service.delete(dto.getId());
             message.add(msg);
+            List<TodoEntity> entitieList = service.retrieve("temporary-user");
+
+            // entities를 dtos로 스트림 변환
+            List<TodoDTO> dtos = entitieList.stream().map(TodoDTO::new).collect(Collectors.toList());
 
             // ResponseDTO 생성
-            ResponseDTO<String> response = ResponseDTO.<String>builder().data(message).build();
+            ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
+
+            // ResponseDTO 생성
+            // ResponseDTO<String> response =
+            // ResponseDTO.<String>builder().data(message).build();
 
             return ResponseEntity.ok().body(response);
         } catch (Exception e) {
