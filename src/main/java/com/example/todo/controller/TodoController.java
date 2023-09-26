@@ -83,7 +83,7 @@ public class TodoController {
     }
 
     // SpringBoot 에서 Get 메소드로 body의 값을 받아올 수 없기 때문에 해당 메소드 사용이 불가능 하다.
-    //
+    // Get을 이용한 update 방법
     @GetMapping("/update")
     public ResponseEntity<?> update(@RequestBody TodoDTO dto) {
         try {
@@ -113,6 +113,7 @@ public class TodoController {
         }
     }
 
+    // Put을 이용한 update 방법
     @PutMapping()
     public ResponseEntity<?> updateTodo(@RequestBody TodoDTO dto) {
         try {
